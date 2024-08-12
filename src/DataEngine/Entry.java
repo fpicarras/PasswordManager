@@ -3,10 +3,9 @@ package DataEngine;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Entry {
+public class Entry implements Comparable<Entry> {
     private String title;
     private String description;
     private String username;
@@ -24,7 +23,7 @@ public class Entry {
     }
 
     private void updateAccessDate(){
-        date = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(Calendar.getInstance().getTime());
+        date = new SimpleDateFormat("HH:mm dd/MM/yyyy").format(Calendar.getInstance().getTime());
     }
 
     public String toString(){
@@ -79,5 +78,11 @@ public class Entry {
 
     public String getDate() {
         return date;
+    }
+
+    @Override
+    public int compareTo(Entry o) {
+        //Compare the Name of the Entry
+        return this.title.compareTo(o.title);
     }
 }

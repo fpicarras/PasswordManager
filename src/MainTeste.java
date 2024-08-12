@@ -4,7 +4,7 @@ import JsonHandler.*;
 
 import java.util.ArrayList;
 
-public class Main {
+public class MainTeste {
     public static void main(String[] Args){
         EncryptAlgorithm c = new Picarra(16);
         JsonHandler j = new SimpleJsonHandler();
