@@ -18,7 +18,7 @@ public class SimpleJsonHandler implements JsonHandler{
             return json;
         } catch (Exception e) {
             System.out.println("Error parsing JSON: " + e.getMessage());
-            throw new RuntimeException(e);
+            return null;
         }
     }
 

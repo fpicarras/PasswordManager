@@ -16,23 +16,36 @@ public class DataEngine {
     private final JsonHandler j;
     private final EncryptAlgorithm c;
 
-    private String key;
+    private String key = null;
     private JSONObject data;
+    private  ArrayList<Entry> entries = null;
 
-    public DataEngine(JsonHandler j, EncryptAlgorithm c, String key){
+    public DataEngine(JsonHandler j, EncryptAlgorithm c){
         this.j = j;
         this.c = c;
-        this.key = key;
     }
 
-    public ArrayList<Entry> open(String filepath){
+    public boolean open(String filepath){
         data = j.getJSON(c.decrypt(this.readFile(filepath), key));
-        return getEntries(data);
+        if(data == null) return false;
+        entries = getEntries(data);
+        //System.out.println("Opening data : " + entries);
+        return true;
     }
 
-    public void save(String filepath, ArrayList<Entry> entries){
+    public void save(String filepath){
+        if(entries == null) return;
+        //System.out.println("Saving data : " + entries);
         data.put("content", getContent(entries));
         this.writeFile(filepath, c.encrypt(j.getString(data), key));
+    }
+
+    public ArrayList<Entry> getEntries(){
+        return entries;
+    }
+
+    public void setKey(String key){
+        this.key = key;
     }
 
     private ArrayList<Entry> getEntries(JSONObject content){
@@ -41,6 +54,10 @@ public class DataEngine {
             entries.add(new Entry((JSONObject) entry));
         }
         return entries;
+    }
+
+    public void deleteEntries(){
+        entries = null;
     }
 
     private JSONArray getContent(ArrayList<Entry> entries){
