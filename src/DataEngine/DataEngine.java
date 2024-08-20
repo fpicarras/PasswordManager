@@ -20,32 +20,36 @@ public class DataEngine {
     private JSONObject data;
     private  ArrayList<Entry> entries = null;
 
+    private String filename = "pmdata.txt";
+
     public DataEngine(JsonHandler j, EncryptAlgorithm c){
         this.j = j;
         this.c = c;
     }
 
-    public boolean open(String filepath){
-        data = j.getJSON(c.decrypt(this.readFile(filepath), key));
+    public DataEngine(JsonHandler j, EncryptAlgorithm c, String filename){
+        this.j = j;
+        this.c = c;
+        this.filename = filename;
+    }
+
+    public boolean open(){
+        data = j.getJSON(c.decrypt(this.readFile(filename), key));
         if(data == null) return false;
         entries = getEntries(data);
         //System.out.println("Opening data : " + entries);
         return true;
     }
 
-    public void save(String filepath){
+    public void save(){
         if(entries == null) return;
-        //System.out.println("Saving data : " + entries);
+
         data.put("content", getContent(entries));
-        this.writeFile(filepath, c.encrypt(j.getString(data), key));
+        this.writeFile(filename, c.encrypt(j.getString(data), key));
     }
 
     public ArrayList<Entry> getEntries(){
         return entries;
-    }
-
-    public void setKey(String key){
-        this.key = key;
     }
 
     private ArrayList<Entry> getEntries(JSONObject content){
@@ -73,6 +77,41 @@ public class DataEngine {
             content.put(entryJson);
         }
         return content;
+    }
+
+    //Check if file exists
+    public boolean fileExists(){
+        return Files.exists(Paths.get(filename));
+    }
+
+    public void setKey(String key){
+        this.key = key;
+    }
+
+    public String getKey(){
+        return key;
+    }
+
+    //Generate a 16 character key
+    public String generatePassword(){
+        return "WIP";
+    }
+
+    public String getDefaultMail(){
+        try {
+            return data.getString("defaultMail");
+        } catch (Exception e){
+            return "";
+        }
+    }
+
+    public void setDefaultMail(String mail){
+        data.put("defaultMail", mail);
+    }
+
+    //Generate an email
+    public String generateEmail(){
+        return "WIP";
     }
 
     protected void writeFile(String filePath, String str) {

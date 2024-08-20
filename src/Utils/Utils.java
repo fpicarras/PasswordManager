@@ -1,3 +1,4 @@
+// Utils.java
 package Utils;
 
 import javax.swing.*;
@@ -26,7 +27,13 @@ public class Utils {
         label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         popup.getContentPane().add(label);
         popup.pack();
-        popup.setLocation(location);
+
+        // Adjust the location to ensure the popup is within screen bounds
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = Math.min(location.x, screenSize.width - popup.getWidth());
+        int y = Math.min(location.y, screenSize.height - popup.getHeight());
+        popup.setLocation(x, y);
+
         popup.setVisible(true);
 
         // Hide the popup after 1.5 seconds

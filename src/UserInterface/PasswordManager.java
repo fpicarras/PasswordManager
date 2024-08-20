@@ -1,39 +1,37 @@
 package UserInterface;
 
-import DataEngine.DataEngine;
+import DataEngine.*;
+import UserInterface.SimpleDisplayManager.DisplayManager;
 
-import javax.swing.*;
-import java.awt.*;
-
-public class PasswordManager {
+public class PasswordManager extends DisplayManager {
+    private final DataEngine eng;
     public PasswordManager(DataEngine eng){
-        JFrame frame = new JFrame("Password Manager");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 400);
-
-        CardLayout cardLayout = new CardLayout();
-        JPanel mainPanel = new JPanel(cardLayout);
-
-        ImageIcon icon = new ImageIcon("src/icon.png");
-        frame.setIconImage(icon.getImage());
+        super("Password Manager", 300, 400);
+        setIcon(getClass().getResource("/icon.png"));
+        setOnClose(eng::save);
+        this.eng = eng;
 
         //Creation of the pages
-        LoginPanel login = new LoginPanel(eng, mainPanel, cardLayout);
-        EntryManagerSlim entryManager = new EntryManagerSlim(eng, mainPanel, cardLayout);
-        login.setNextPage(entryManager);
-        entryManager.setPreviousPage(login.getPageName());
+        LoginPanel login = new LoginPanel(this);
+        MainPanel entryManager = new MainPanel(this);
 
-        mainPanel.add(login.generatePage(), login.getPageName());
-        frame.add(mainPanel);
-        cardLayout.show(mainPanel, login.getPageName());
-        frame.setVisible(true);
+        //Adding the pages to the display manager
+        addPage(login);
+        addPage(entryManager);
 
-        //SAve on exit
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                eng.save("teste.json");
-            }
-        });
+        //Check is file exists
+        if(eng.fileExists()){
+            showPage(login.getPageName());
+        }else {
+            SigninPanel signin = new SigninPanel(this);
+            addPage(signin);
+            showPage(signin.getPageName());
+        }
+
+        begin();
+    }
+
+    public DataEngine getDataEngine(){
+        return eng;
     }
 }

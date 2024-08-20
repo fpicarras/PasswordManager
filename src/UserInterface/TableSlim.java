@@ -19,15 +19,12 @@ public class TableSlim implements Table {
     private final JTable table;
     private final JScrollPane scrollPane;
 
-    private final JPanel mainPanel;
-    private final CardLayout cardLayout;
-
+    private final PasswordManager passwordManager;
     private final DataEngine eng;
 
-    public TableSlim(DataEngine eng, JPanel mainPanel, CardLayout cardLayout) {
-        this.mainPanel = mainPanel;
-        this.cardLayout = cardLayout;
-        this.eng = eng;
+    public TableSlim(PasswordManager passwordManager) {
+        this.passwordManager = passwordManager;
+        this.eng = passwordManager.getDataEngine();
         this.tableModel = new DefaultTableModel(new Object[]{"Title", "Description"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -47,8 +44,7 @@ public class TableSlim implements Table {
                         //Render the entry in a separate window
                         Entry entry = eng.getEntries().get(selectedRow);
                         JPanel entryPanel = renderEntry(entry);
-                        mainPanel.add(entryPanel, "entry");
-                        cardLayout.show(mainPanel, "entry");
+                        passwordManager.showPage(entryPanel);
                     }
                 }
             }
@@ -118,7 +114,7 @@ public class TableSlim implements Table {
 
         //Add button to go back
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> cardLayout.show(mainPanel, "main"));
+        backButton.addActionListener(e -> passwordManager.showPage("main"));
         frame.add(backButton, BorderLayout.NORTH);
 
         JTable entryTable = new JTable(new DefaultTableModel(new Object[]{"Field", "Value"}, 0){

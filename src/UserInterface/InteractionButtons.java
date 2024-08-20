@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -86,7 +85,7 @@ public class InteractionButtons implements ComponentBuilder {
             secretField.setText(entry.getSecret());
         }
 
-        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10));
         panel.add(new JLabel("Title:"));
         panel.add(titleField);
         panel.add(new JLabel("Description:"));
@@ -97,8 +96,12 @@ public class InteractionButtons implements ComponentBuilder {
         panel.add(emailField);
         panel.add(new JLabel("Secret:"));
         panel.add(secretField);
-        panel.add(new JLabel("Last modified:      " + (entry == null ? "" : entry.getDate())));
+        panel.add(new JLabel("Last modified:"));
+        panel.add(new JLabel(entry == null ? "" : entry.getDate()));
 
+        JPanel generateButtonsPanel = getGenerateButtonsPanel(secretField, emailField);
+        panel.add(generateButtonsPanel);
+        
         int result = JOptionPane.showConfirmDialog(null, panel, entry == null ? "Add Entry" : "Edit Entry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
@@ -119,7 +122,41 @@ public class InteractionButtons implements ComponentBuilder {
                 return entry;
             }
         }
-
         return null;
+    }
+
+    private JPanel getGenerateButtonsPanel(JPasswordField secretField, JTextField emailField) {
+        JPanel generateButtonsPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+
+        JButton generatePasswordButton = new JButton("Generate Password");
+        JButton generateEmailButton = new JButton("Generate Email");
+
+        generatePasswordButton.addActionListener(e -> {
+            //If the field is not empty, prompt the user to confirm
+            if (secretField.getPassword().length > 0) {
+                int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to generate a new password? The current one will be lost.", "Generate Password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == JOptionPane.OK_OPTION) {
+                    System.out.println("Generating password");
+                    secretField.setText(eng.generatePassword());
+                }
+            }else {
+                secretField.setText(eng.generatePassword());
+            }
+        });
+        generateEmailButton.addActionListener(e -> {
+            //Prompt the user to confirm
+            if (!emailField.getText().isEmpty()) {
+                int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to generate a new email? The current one will be lost.", "Generate Email", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == JOptionPane.OK_OPTION) {
+                    emailField.setText(eng.generateEmail());
+                }
+            } else {
+                emailField.setText(eng.generateEmail());
+            }
+        });
+
+        generateButtonsPanel.add(generatePasswordButton);
+        generateButtonsPanel.add(generateEmailButton);
+        return generateButtonsPanel;
     }
 }
