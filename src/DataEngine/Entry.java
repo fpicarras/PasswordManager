@@ -83,6 +83,6 @@ public class Entry implements Comparable<Entry> {
     @Override
     public int compareTo(Entry o) {
         //Compare the Name of the Entry
-        return this.title.compareTo(o.title);
+        return this.title.compareToIgnoreCase(o.title);
     }
 }

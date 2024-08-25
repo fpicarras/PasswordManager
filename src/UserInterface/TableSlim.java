@@ -110,7 +110,7 @@ public class TableSlim implements Table {
     //Render Entry showing all fields, adding the option to copy the gmail, username and secret
     //We use a verical table for this.
     private JPanel renderEntry(Entry entry){
-        JPanel frame = new JPanel();
+        JPanel frame = new JPanel(new BorderLayout());
 
         //Add button to go back
         JButton backButton = new JButton("Back");
@@ -152,18 +152,20 @@ public class TableSlim implements Table {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) { // Double-click detected
                     int selectedRow = entryTable.getSelectedRow();
-                    int selectedColumn = entryTable.getSelectedColumn();
+                    //int selectedColumn = entryTable.getSelectedColumn();
                     if (selectedRow >= 0) {
                         String columnName = (String) entryTable.getValueAt(selectedRow, 0);
+                        Point point = new Point(e.getPoint());
+                        SwingUtilities.convertPointToScreen(point, entryTable);
                         switch (columnName) {
                             case "Secret":
-                                copyToClipboard(entry.getSecret(), e.getPoint());
+                                copyToClipboard(entry.getSecret(), point);
                                 break;
                             case "Username":
-                                copyToClipboard(entry.getUsername(), e.getPoint());
+                                copyToClipboard(entry.getUsername(), point);
                                 break;
                             case "Email":
-                                copyToClipboard(entry.getEmail(), e.getPoint());
+                                copyToClipboard(entry.getEmail(), point);
                                 break;
                             default:
                                 break;

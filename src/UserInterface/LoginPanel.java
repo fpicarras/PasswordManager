@@ -19,25 +19,21 @@ public class LoginPanel extends Page {
         loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding
 
         // Title
-        JLabel titleLabel = new JLabel("Login");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        JLabel titleLabel = displayManager.getCustomization().createCustomLabel("Login", 24, true);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         loginPanel.add(titleLabel, BorderLayout.NORTH);
 
         // Input panel
         JPanel inputPanel = new JPanel(new GridLayout(2, 1, 10, 10)); // Add spacing between components
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add padding
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel passwordLabel = displayManager.getCustomization().createCustomLabel("Password", 16, false);
         JPasswordField passwordField = new JPasswordField(20);
         inputPanel.add(passwordLabel);
         inputPanel.add(passwordField);
 
         // Login button
-        JButton loginButton = new JButton("Login");
-        loginButton.setFont(new Font("Arial", Font.BOLD, 16));
-        loginButton.setBackground(new Color(70, 130, 180));
-        loginButton.setForeground(Color.WHITE);
+        JButton loginButton = displayManager.getCustomization().createCustomButton("Login", 16, true);
+        displayManager.getCustomization().highlightComponent(loginButton);
         loginButton.setFocusPainted(false);
 
         ActionListener loginAction = e -> {

@@ -20,32 +20,27 @@ public class SigninPanel extends LoginPanel{
         loginPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Add padding
 
         // Title
-        JLabel titleLabel = new JLabel("Signin");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        JLabel titleLabel = displayManager.getCustomization().createCustomLabel("Signin", 24, true);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         loginPanel.add(titleLabel, BorderLayout.NORTH);
 
         // Input panel
         JPanel inputPanel = new JPanel(new GridLayout(4, 1, 10, 10)); // Add spacing between components
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0)); // Add padding
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel passwordLabel = displayManager.getCustomization().createCustomLabel("Password:", 16, false);
         JPasswordField passwordField = new JPasswordField(20);
         inputPanel.add(passwordLabel);
         inputPanel.add(passwordField);
 
         //Second Input Panel
-        JLabel passwordLabel2 = new JLabel("Confirm:");
-        passwordLabel2.setFont(new Font("Arial", Font.PLAIN, 16));
+        JLabel passwordLabel2 = displayManager.getCustomization().createCustomLabel("Confirm:", 16, false);
         JPasswordField passwordField2 = new JPasswordField(20);
         inputPanel.add(passwordLabel2);
         inputPanel.add(passwordField2);
 
         // Signin button
-        JButton loginButton = new JButton("Signin");
-        loginButton.setFont(new Font("Arial", Font.BOLD, 16));
-        loginButton.setBackground(new Color(70, 130, 180));
-        loginButton.setForeground(Color.WHITE);
+        JButton loginButton = displayManager.getCustomization().createCustomButton("Signin", 16, true);
+        displayManager.getCustomization().highlightComponent(loginButton);
         loginButton.setFocusPainted(false);
 
         ActionListener loginAction = e -> {

@@ -1,12 +1,14 @@
 package UserInterface;
 
 import DataEngine.*;
+import UserInterface.SimpleDisplayManager.Costumizations.Customization;
 import UserInterface.SimpleDisplayManager.DisplayManager;
 
 public class PasswordManager extends DisplayManager {
     private final DataEngine eng;
-    public PasswordManager(DataEngine eng){
-        super("Password Manager", 300, 400);
+
+    public PasswordManager(DataEngine eng, Customization cus){
+        super("Password Manager", 300, 400, cus);
         setIcon(getClass().getResource("/icon.png"));
         setOnClose(eng::save);
         this.eng = eng;

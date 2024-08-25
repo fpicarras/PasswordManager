@@ -40,8 +40,7 @@ public class SettingsPanel extends Page {
         defaultMail.setText(mail);
         defaultMailPanel.add(defaultMail, gbc);
         if(mail.isEmpty()){
-            JLabel warning = new JLabel("⚠: Default mail is empty!");
-            warning.setForeground(Color.RED);
+            JLabel warning = displayManager.getCustomization().getWarningLabel("Default mail is empty!");
             gbc.gridy++;
             defaultMailPanel.add(warning, gbc);
         }

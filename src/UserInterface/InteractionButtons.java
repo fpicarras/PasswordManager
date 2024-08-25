@@ -21,7 +21,7 @@ public class InteractionButtons implements ComponentBuilder {
         this.eng = eng;
         this.table = table;
 
-        panel = new JPanel();
+        panel = new JPanel(new GridLayout(1, 3, 1, 1)); // 1 row, 3 columns, 10px horizontal and vertical gaps
         JButton addButton = new JButton("Add");
         JButton editButton = new JButton("Edit");
         JButton deleteButton = new JButton("Delete");
@@ -33,6 +33,7 @@ public class InteractionButtons implements ComponentBuilder {
         panel.add(addButton);
         panel.add(editButton);
         panel.add(deleteButton);
+        panel.setPreferredSize(new Dimension(269, 36));
     }
 
     @Override
@@ -44,6 +45,7 @@ public class InteractionButtons implements ComponentBuilder {
         Entry entry = showEntryDialog(null);
         if (entry != null) {
             eng.getEntries().add(entry);
+            eng.sort();
             table.updateTableModel();
         }
     }
@@ -56,6 +58,7 @@ public class InteractionButtons implements ComponentBuilder {
             Entry updatedEntry = showEntryDialog(entry);
             if (updatedEntry != null) {
                 entries.set(selectedRow, updatedEntry);
+                eng.sort();
                 table.updateTableModel();
             }
         }
@@ -99,7 +102,7 @@ public class InteractionButtons implements ComponentBuilder {
         panel.add(new JLabel("Last modified:"));
         panel.add(new JLabel(entry == null ? "" : entry.getDate()));
 
-        JPanel generateButtonsPanel = getGenerateButtonsPanel(secretField, emailField);
+        JPanel generateButtonsPanel = getGenerateButtonsPanel(secretField, emailField, titleField);
         panel.add(generateButtonsPanel);
         
         int result = JOptionPane.showConfirmDialog(null, panel, entry == null ? "Add Entry" : "Edit Entry", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -125,7 +128,7 @@ public class InteractionButtons implements ComponentBuilder {
         return null;
     }
 
-    private JPanel getGenerateButtonsPanel(JPasswordField secretField, JTextField emailField) {
+    private JPanel getGenerateButtonsPanel(JPasswordField secretField, JTextField emailField, JTextField titleField) {
         JPanel generateButtonsPanel = new JPanel(new GridLayout(1, 2, 10, 10));
 
         JButton generatePasswordButton = new JButton("Generate Password");
@@ -148,10 +151,10 @@ public class InteractionButtons implements ComponentBuilder {
             if (!emailField.getText().isEmpty()) {
                 int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to generate a new email? The current one will be lost.", "Generate Email", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
-                    emailField.setText(eng.generateEmail());
+                    emailField.setText(eng.generateEmail(titleField.getText()));
                 }
             } else {
-                emailField.setText(eng.generateEmail());
+                emailField.setText(eng.generateEmail(titleField.getText()));
             }
         });
 

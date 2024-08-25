@@ -3,16 +3,16 @@ package UserInterface.SimpleDisplayManager.Costumizations;
 import javax.swing.*;
 import java.awt.*;
 
-public class DefaultText implements CustomText {
+public class DefaultCustomization implements Customization {
     private Color highlightColor = new Color(70, 130, 180, 255);
     private String fontName = "Arial";
 
-    public DefaultText(Color highlightColor, String fontName) {
+    public DefaultCustomization(Color highlightColor, String fontName) {
         this.highlightColor = highlightColor;
         this.fontName = fontName;
     }
 
-    public DefaultText() {
+    public DefaultCustomization() {
     }
 
     @Override
@@ -24,6 +24,7 @@ public class DefaultText implements CustomText {
     @Override
     public void highlightComponent(JComponent component) {
         component.setBackground(highlightColor);
+        component.setForeground(Color.WHITE);
     }
 
     @Override
@@ -31,6 +32,13 @@ public class DefaultText implements CustomText {
         JLabel label = new JLabel(text);
         setCustomText(label, size, bold);
         return label;
+    }
+
+    @Override
+    public JButton createCustomButton(String text, int size, boolean bold){
+        JButton button = new JButton(text);
+        setCustomText(button, size, bold);
+        return button;
     }
 
     @Override

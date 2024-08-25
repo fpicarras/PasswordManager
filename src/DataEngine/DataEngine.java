@@ -52,11 +52,17 @@ public class DataEngine {
         return entries;
     }
 
+    public void sort(){
+        entries.sort(Entry::compareTo);
+    }
+
     private ArrayList<Entry> getEntries(JSONObject content){
         ArrayList<Entry> entries = new ArrayList<>();
         for(Object entry : content.getJSONArray("content")){
             entries.add(new Entry((JSONObject) entry));
         }
+        //Sort the entries by title
+        entries.sort(Entry::compareTo);
         return entries;
     }
 
@@ -94,7 +100,12 @@ public class DataEngine {
 
     //Generate a 16 character key
     public String generatePassword(){
-        return "WIP";
+        //Generate a 16 character key that includes numbers, letters and special characters
+        StringBuilder pass = new StringBuilder();
+        for(int i = 0; i < 16; i++){
+            pass.append((char) (Math.random() * 93 + 33));
+        }
+        return pass.toString();
     }
 
     public String getDefaultMail(){
@@ -110,8 +121,14 @@ public class DataEngine {
     }
 
     //Generate an email
-    public String generateEmail(){
-        return "WIP";
+    public String generateEmail(String context){
+        context = context.replaceAll(" ", "_");
+        //Find the "@" symbol in the default mail and insert the context before it with a "+" in between
+        //If "@" is not found, return the default mail
+        String mail = getDefaultMail();
+        int index = mail.indexOf("@");
+        if(index == -1) return mail;
+        return mail.substring(0, index) + "+" + context + mail.substring(index);
     }
 
     protected void writeFile(String filePath, String str) {

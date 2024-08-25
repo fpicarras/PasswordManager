@@ -1,5 +1,7 @@
 package UserInterface.SimpleDisplayManager;
 
+import UserInterface.SimpleDisplayManager.Costumizations.Customization;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -12,9 +14,11 @@ public abstract class DisplayManager {
     protected final JPanel mainPanel;
     protected JFrame frame;
 
+    private final Customization customization;
+
     private final ArrayList<String> renderedPages;
 
-    public DisplayManager(String displayName, int width, int height){
+    public DisplayManager(String displayName, int width, int height, Customization aesthetics){
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         pages = new HashMap<>();
@@ -22,6 +26,7 @@ public abstract class DisplayManager {
         frame = new JFrame(displayName);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, height);
+        customization = aesthetics;
     }
 
     public void begin(){
@@ -67,6 +72,10 @@ public abstract class DisplayManager {
         }catch (Exception e){
             System.out.println("Error setting icon: " + e.getMessage());
         }
+    }
+
+    public Customization getCustomization(){
+        return customization;
     }
 
     //Receives a function to execute on window close

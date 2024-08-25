@@ -20,7 +20,7 @@ public class SearchBar implements ComponentBuilder {
         this.table = table;
 
         // Search bar
-        searchBar = new JTextField(20);
+        searchBar = new JTextField(18);
         searchBar.addActionListener(this::searchEntries);
 
         searchPanel = new JPanel();
@@ -41,10 +41,5 @@ public class SearchBar implements ComponentBuilder {
     @Override
     public Component getComponent() {
         return searchPanel;
-    }
-
-    public void focus() {
-        searchBar.requestFocus();
-        System.out.println("Focused search bar");
     }
 }
