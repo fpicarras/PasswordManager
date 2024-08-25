@@ -33,7 +33,6 @@ public class InteractionButtons implements ComponentBuilder {
         panel.add(addButton);
         panel.add(editButton);
         panel.add(deleteButton);
-        panel.setPreferredSize(new Dimension(269, 36));
     }
 
     @Override
